@@ -7,7 +7,7 @@ export async function GET() {
     }
 
     const apiKey = Buffer.from(
-      process.env.API_KEY_BASE64_1 as string,
+      process.env.API_KEY_BASE64 as string,
       "base64"
     ).toString("utf-8");
      
@@ -30,15 +30,12 @@ export async function GET() {
     const fetchedData = await response.text();
 
     const parseArrayToJson = (data: string) => {
-        // Remove [" from the beginning and "] from the end
         const cleanData = data.replace(/^\["|"\]$/g, '');
         
         const itemSplitter = cleanData.split(",");
         const json = itemSplitter.map((item: string) => {
             const splitter = item.split("|=|");
             let [timestamp, event, type, message, id] = splitter;
-            
-            // Remove quotes from timestamp and id
             timestamp = timestamp.replace(/^"|"$/g, '');
             id = id.replace(/^"|"$/g, '');
             
